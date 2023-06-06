@@ -17,8 +17,10 @@ st.header('Summary')
 
 
 st.text('Fixed width text')
-jsonObject = json.load('sample.json')
+jsonObject = json.load('summary.json')
 st.json(jsonObject)
-st.header('Number of Stars')
+jsonObject2 = json.load('sentiment.json')
+st.json(jsonObject2)
+# st.header('Number of Stars')
 
 
