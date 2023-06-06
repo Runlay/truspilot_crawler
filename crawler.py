@@ -57,7 +57,7 @@ def createSumSent(link):
     for i in jsonarr:
         sample_text=sample_text+jsonarr[i].get("Content")
         sample_text=sample_text+"\n"
-        star_mid=star_mid+int(jsonarr[i].get("Rating"))
+        star_mid=star_mid+int(float(jsonarr[i].get("Rating")))
         if i==jsonarr.__len__():
             star_mid=star_mid/jsonarr.__len__()
         # print(jsonarr[i].get("Content"))
