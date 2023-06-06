@@ -10,6 +10,8 @@ import os
 nltk.download('stopwords')
 stop_words = set(stopwords.words('german'))
 
+star_mid=0
+
 
 def createSumSent(link):
 
@@ -54,6 +56,9 @@ def createSumSent(link):
     for i in jsonarr:
         sample_text=sample_text+jsonarr[i].get("Content")
         sample_text=sample_text+"\n"
+        star_mid=star_mid+int(jsonarr[i].get("Rating"))
+        if i==jsonarr.__len__():
+            star_mid=star_mid/jsonarr.__len__()
         # print(jsonarr[i].get("Content"))
     print(sample_text)
     nltk.download('punkt')
@@ -101,6 +106,7 @@ def createSumSent(link):
     sentiment_dict={}
     sentiment_dict["Polarity"]=polarity
     sentiment_dict["Subjectivity"]=subjectivity
+    sentiment_dict["Stars"]=star_mid
     sentiment=json.dumps(sentiment_dict)
 
     with open("sentiment.json", "w") as outfile:
