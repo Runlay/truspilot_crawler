@@ -10,11 +10,12 @@ import os
 nltk.download('stopwords')
 stop_words = set(stopwords.words('german'))
 
-star_mid=0
+
 
 
 def createSumSent(link):
-
+    
+    star_mid=0
     try:
         os.remove('summary.json')
         os.remove('sentiment.json')
