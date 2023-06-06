@@ -5,13 +5,21 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 import requests
 from bs4 import BeautifulSoup
 import json
-
+import os
  
 nltk.download('stopwords')
 stop_words = set(stopwords.words('german'))
 
 
 def createSumSent(link):
+
+    try:
+        os.remove('summary.json')
+        os.remove('sentiment.json')
+        os.remove('sample.json')
+    except:
+        pass
+
     URL = link
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
@@ -21,9 +29,11 @@ def createSumSent(link):
     review_dict={}
     i =0
     for review in _reviews:
-        i=i+1
+        i=i+1                                 
         heading=review.find("h2",{"class":'typography_heading-s__f7029 typography_appearance-default__AAY17'})
         content=review.find("p",{"class":'typography_body-l__KUYFJ typography_appearance-default__AAY17 typography_color-black__5LYEn'})
+        print(heading.text)
+        print(content.text)
         r={}
         r['Rating']=review.find("img")['alt'][13:14]
         r["Heading"]=heading.text
@@ -35,6 +45,10 @@ def createSumSent(link):
     #     print("\n \n")
         review_dict[i]=r
     sample_text=""
+    output=json.dumps(review_dict)
+    # Writing to sample.json
+    with open("sample.json", "w") as outfile:
+        outfile.write(output)
     with open("sample.json", "r") as f:
         jsonarr = json.load(f)
     for i in jsonarr:

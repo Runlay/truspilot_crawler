@@ -1,26 +1,20 @@
 import streamlit as st
 import json
-# st.text('Fixed width text')
-# st.markdown('_Markdown_') # see *
-# st.latex(r''' e^{i\pi} + 1 = 0 ''')
-# st.write('Most objects') # df, err, func, keras!
-# st.write(['st', 'is <', 3]) # see *
-st.title('Summary')
-# st.header('Data of the software: ')
-# st.subheader('Publication date: ')
-# st.subheader('Kind of Software: ')
-# st.subheader('Number of evaluation:')
-# st.header('Data of the company: ')
-# st.subheader('Name of the company:')
-# st.subheader('Number of employees:')
-# st.header('Summary')
+import crawler
+import time
 
+st.title('Trustpilot Summary Generator')
+url_input=st.text_input('Enter Trustpilot URL: ')
+st.write('Crawling: ', url_input)
+crawler.createSumSent(url_input)
 
+# time.sleep(10)
 # st.text('Fixed width text')
 jsonObject = json.load(open('summary.json'))
 st.json(jsonObject)
 jsonObject2 = json.load(open('sentiment.json'))
 st.json(jsonObject2)
+
 # st.header('Number of Stars')
 
 
