@@ -15,7 +15,7 @@ stop_words = set(stopwords.words('german'))
 
 def createSumSent(link):
     
-    star_mid=0
+    star_mid=0.0
     try:
         os.remove('summary.json')
         os.remove('sentiment.json')
@@ -35,17 +35,12 @@ def createSumSent(link):
         i=i+1                                 
         heading=review.find("h2",{"class":'typography_heading-s__f7029 typography_appearance-default__AAY17'})
         content=review.find("p",{"class":'typography_body-l__KUYFJ typography_appearance-default__AAY17 typography_color-black__5LYEn'})
-        print(heading.text)
-        print(content.text)
+
         r={}
         r['Rating']=review.find("img")['alt'][13:14]
         r["Heading"]=heading.text
         r["Content"]=content.text
-    #     print(review.find("img")['alt'])
-    #     print(heading.text)
-    #     print("")
-    #     print(content.text)
-    #     print("\n \n")
+
         review_dict[i]=r
     sample_text=""
     output=json.dumps(review_dict)
@@ -57,11 +52,13 @@ def createSumSent(link):
     for i in jsonarr:
         sample_text=sample_text+jsonarr[i].get("Content")
         sample_text=sample_text+"\n"
-        star_mid=star_mid+int(float(jsonarr[i].get("Rating")))
-        if i==jsonarr.__len__():
-            star_mid=star_mid/jsonarr.__len__()
+        # if (jsonarr[i].get("Rating") is not None):
+        #     star_mid=star_mid+int(jsonarr[i].get("Rating"))
+        # print(star_mid)
+        # if i==len(jsonarr):
+        #     star_mid=star_mid/len(jsonarr)
         # print(jsonarr[i].get("Content"))
-    print(sample_text)
+ 
     nltk.download('punkt')
     words=word_tokenize(sample_text)
     words = [word for word in words if not word in stop_words]
@@ -90,7 +87,7 @@ def createSumSent(link):
     summary_sentences = sorted(sorted_sentences[:5])
 
     summary = ' '.join([sent_tokenize(sample_text)[i] for i in summary_sentences])
-    print(summary)
+    
     summary_dict={}
     summary_dict["Summary"]=summary
     summarysummary=json.dumps(summary_dict)
@@ -101,13 +98,10 @@ def createSumSent(link):
     polarity = blob.sentiment.polarity
     subjectivity = blob.sentiment.subjectivity
 
-    print("Polarity (Sentiment):", polarity)
-    print("Subjectivity:", subjectivity)
-
     sentiment_dict={}
     sentiment_dict["Polarity"]=polarity
     sentiment_dict["Subjectivity"]=subjectivity
-    sentiment_dict["Stars"]=star_mid
+    sentiment_dict["Stars"]=results.find("p",{"class":'typography_body-l__KUYFJ typography_appearance-subtle__8_H2l'}).text
     sentiment=json.dumps(sentiment_dict)
 
     with open("sentiment.json", "w") as outfile:
